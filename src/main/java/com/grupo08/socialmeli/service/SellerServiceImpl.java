@@ -3,6 +3,7 @@ package com.grupo08.socialmeli.service;
 import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
+import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
@@ -37,7 +38,7 @@ public class SellerServiceImpl implements ISellerService {
                 .findFirst();
 
         if (sellerToRemove.isPresent()) {
-            throw new NotFoundException("No puedes seguir un vendedor que ya sigues.");
+            throw new BadRequestException("No puedes seguir un vendedor que ya sigues.");
         }
         
         buyer.get().addFollowingSeller(seller.get());
