@@ -8,8 +8,6 @@ import com.grupo08.socialmeli.dto.PostDto;
 
 import java.util.List;
 
-import java.util.Optional;
-
 public interface IUserService {
     FollowDto follow(int idBuyer, int idSeller);
 
