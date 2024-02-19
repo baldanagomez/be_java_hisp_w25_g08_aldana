@@ -1,6 +1,7 @@
 package com.grupo08.socialmeli.service;
 
 import com.grupo08.socialmeli.dto.response.FollowDto;
+import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.dto.response.FollowersDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
 import com.grupo08.socialmeli.entity.Buyer;
@@ -131,5 +132,24 @@ public class UserServiceImpl implements IUserService {
         buyerResponseDTO.setFollowed(followedSellersDTO);
 
         return buyerResponseDTO;
+    }
+
+    @Override
+    public FollowedDTO getFollowedSellers(int userId) {
+        return null;
+    }
+
+    @Override
+    public FollowersCountDto countSellerFollowers(int userId) {
+        //vars
+        Optional<Seller> seller = sellerRepository.findById(userId);
+
+        //validate: el usuario obtenido existe y es vendedor
+        if(seller.isEmpty()) throw new NotFoundException("El usuario no existe");
+        //validacion comentada dado repeticion de id entre compradores y vendedores
+        //if(buyerRepository.findById(userId).isPresent()) throw new BadRequestException("El id ingresado debe ser de un vendedor: se obtuvo comprador");
+
+        //return
+        return new FollowersCountDto(userId, seller.get().getName(), seller.get().getFollowers().size());
     }
 }
