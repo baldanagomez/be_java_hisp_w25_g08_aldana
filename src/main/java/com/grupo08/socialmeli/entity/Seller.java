@@ -1,12 +1,12 @@
 package com.grupo08.socialmeli.entity;
 
-import lombok.AllArgsConstructor;
+import com.grupo08.socialmeli.exception.BadRequestException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -25,4 +25,29 @@ public class Seller extends User{
         this.posts = posts;
         this.followers = followers;
     }
+
+    public boolean checkBuyer(Buyer seller) {
+        Optional<User> sellerToRemove = followers.stream()
+                .filter(s -> s.getId() == seller.getId())
+                .findFirst();
+
+        return sellerToRemove.isPresent();
+    }
+
+    public void addFollower(Buyer buyer) {
+        if(this.checkBuyer(buyer))
+            throw new BadRequestException("No puedes seguir un vendedor que ya sigues.");
+
+        followers.add(buyer);
+
+    }
+
+    public void removeFollower(Buyer buyer) {
+        if (!this.checkBuyer(buyer))
+            throw new BadRequestException("No puedes dejar de seguir a alguien que no sigues.");
+
+        followers.remove(buyer);
+    }
+
+
 }

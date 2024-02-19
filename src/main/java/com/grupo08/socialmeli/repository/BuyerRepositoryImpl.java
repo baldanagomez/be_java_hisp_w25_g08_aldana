@@ -13,11 +13,14 @@ import java.util.Optional;
 public class BuyerRepositoryImpl implements IBuyerRepository {
     private final List<Buyer> listBuyers = new ArrayList<>(Arrays.asList(
         new Buyer(1, "Fabian", new ArrayList<>(Arrays.asList(
-                new Seller(1,"Seller1",null,null),
-                new Seller(2,"Seller2",null,null)
+                new Seller(1,"Brayan",null,null),
+                new Seller(2,"Juan",null,null)
         ))),
         new Buyer(2, "Miguel", new ArrayList<>()),
-        new Buyer(3, "Andres", new ArrayList<>())
+        new Buyer(3, "Andres", new ArrayList<>()),
+        new Buyer(4, "Pablo", new ArrayList<>()),
+        new Buyer(5, "Paula", new ArrayList<>()),
+        new Buyer(6, "Andrea", new ArrayList<>())
     ));
 
 
