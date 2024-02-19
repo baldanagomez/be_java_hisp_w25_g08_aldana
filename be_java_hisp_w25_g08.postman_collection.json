@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "85ce85e3-3cf0-47cd-8ad6-b4f9852b55a6",
+		"_postman_id": "615847a7-d9fb-441a-bda3-2805d4f82099",
 		"name": "be_java_hisp_w25_g08",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33062476"
+		"_exporter_id": "32843772"
 	},
 	"item": [
 		{
@@ -33,6 +33,27 @@
 							"key": "sellerId",
 							"value": ""
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0002_countFollowers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/users/1/followers/count",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"1",
+						"followers",
+						"count"
 					]
 				}
 			},
