@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3bb0b697-a0cf-47df-98da-4a3e53d5cf0c",
+		"_postman_id": "4b500149-da86-40c2-b66e-25285c521116",
 		"name": "be_java_hisp_w25_g08",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32956126"
+		"_exporter_id": "32994360"
 	},
 	"item": [
 		{
@@ -65,6 +65,27 @@
 							"key": "sellerId",
 							"value": ""
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0004 list followed sellers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/users/1/followed/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"1",
+						"followed",
+						"list"
 					]
 				}
 			},
