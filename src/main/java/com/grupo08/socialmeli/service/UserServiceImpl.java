@@ -49,6 +49,7 @@ public class UserServiceImpl implements IUserService {
         }
         
         buyer.get().addFollowingSeller(seller.get());
+        seller.get().addFollower(buyer.get());
 
         return new FollowDto(idSeller, seller.get().getName());
     }
@@ -84,6 +85,7 @@ public class UserServiceImpl implements IUserService {
         if(seller.isEmpty()) throw new NotFoundException("No hay vendedor con ese ID.");
 
         buyer.get().unFollowSeller(seller.get());
+        seller.get().removeFollower(buyer.get());
 
     }
 
