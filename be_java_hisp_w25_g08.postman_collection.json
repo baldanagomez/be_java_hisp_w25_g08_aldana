@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4b500149-da86-40c2-b66e-25285c521116",
+		"_postman_id": "85ce85e3-3cf0-47cd-8ad6-b4f9852b55a6",
 		"name": "be_java_hisp_w25_g08",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32994360"
+		"_exporter_id": "33062476"
 	},
 	"item": [
 		{
@@ -39,6 +39,55 @@
 			"response": []
 		},
 		{
+			"name": "0004 list followed sellers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/users/1/followed/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"1",
+						"followed",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0003_followers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/users/1/followers/list?order=name_asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"1",
+						"followers",
+						"list"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "name_asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "0007_unfollow",
 			"request": {
 				"method": "POST",
@@ -65,27 +114,6 @@
 							"key": "sellerId",
 							"value": ""
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "0004 list followed sellers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8081/users/1/followed/list",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"users",
-						"1",
-						"followed",
-						"list"
 					]
 				}
 			},
