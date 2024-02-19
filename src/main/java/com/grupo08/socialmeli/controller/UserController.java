@@ -38,4 +38,9 @@ public class UserController {
         return new ResponseEntity<>(sellerService.getFollowedSellers(userId, order),HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}/followers/count")
+    public  ResponseEntity<?> followersCount(@PathVariable int userId){
+        return new ResponseEntity<>(sellerService.countSellerFollowers(userId),HttpStatus.OK);
+    }
+
 }
