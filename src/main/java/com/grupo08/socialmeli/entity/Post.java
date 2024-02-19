@@ -27,5 +27,5 @@ public class Post {
         this.price = price;
     }
 
-    
+
 }

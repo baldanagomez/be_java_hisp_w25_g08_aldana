@@ -4,15 +4,23 @@ import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.dto.response.FollowersDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
+import com.grupo08.socialmeli.dto.PostDto;
 import com.grupo08.socialmeli.entity.Buyer;
+import com.grupo08.socialmeli.entity.Post;
 import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
+import com.grupo08.socialmeli.utils.PostMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -168,5 +176,20 @@ public class UserServiceImpl implements IUserService {
 
         //return
         return new FollowersCountDto(userId, seller.get().getName(), seller.get().getFollowers().size());
+    }
+
+    @Override
+    public List<PostDto> postSortWeeks(Long idUser) {
+        FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue());
+        List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUser_id).toList();
+        List<Post> listaDePost= new ArrayList<>();
+        for(Integer id:listaDeIdsDeVendedores  ){
+            listaDePost.addAll(sellerRepository.findById(id).get().getPosts());
+        }
+        LocalDate now= LocalDate.now();
+        LocalDate afterweeks=LocalDate.now().minusWeeks(2);
+        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(afterweeks)&&x.getDate().isAfter(now)).toList();
+
+        return PostMapper.ListToDto(listaFiltrada);
     }
 }
