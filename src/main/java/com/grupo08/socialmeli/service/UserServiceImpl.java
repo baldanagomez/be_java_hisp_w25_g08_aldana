@@ -111,8 +111,7 @@ public class UserServiceImpl implements IUserService {
             followedSellers = buyer.getFollowing().stream()
                     .sorted(Comparator.comparing(User::getName).reversed()).toList();
         }else{
-            followedSellers = buyer.getFollowing().stream()
-                    .sorted(Comparator.comparing(User::getName)).toList();
+            throw new BadRequestException("El valor del parámetro order no es correcto");
         }
 
         List<FollowDto> followedSellersDTO = new ArrayList<>();
