@@ -32,16 +32,25 @@ public class UserServiceImpl implements IUserService {
 
         if(seller.isEmpty()) throw new NotFoundException("No hay vendedor con ese ID.");
 
-        Optional<Seller> sellerToRemove = buyer.get().getFollowing().stream()
-                .filter(s -> s.getId() == idSeller)
-                .findFirst();
-
-        if (sellerToRemove.isPresent()) {
-            throw new BadRequestException("No puedes seguir un vendedor que ya sigues.");
-        }
-        
         buyer.get().addFollowingSeller(seller.get());
 
         return new FollowDto(idSeller, seller.get().getName());
     }
+
+    @Override
+    public void unfollow(int idBuyer, int idSeller) {
+
+        Optional<Buyer> buyer = buyerRepository.findById(idBuyer);
+
+        Optional<Seller> seller = sellerRepository.findById(idSeller);
+
+        if(buyer.isEmpty()) throw new NotFoundException("No se encuentra comprador con ese ID.");
+
+        if(seller.isEmpty()) throw new NotFoundException("No hay vendedor con ese ID.");
+
+        buyer.get().unFollowSeller(seller.get());
+
+    }
+
+
 }
