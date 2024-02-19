@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "3bb0b697-a0cf-47df-98da-4a3e53d5cf0c",
+		"name": "be_java_hisp_w25_g08",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32956126"
+	},
+	"item": [
+		{
+			"name": "0001_follow",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/users/:buyerId/follow/:sellerId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						":buyerId",
+						"follow",
+						":sellerId"
+					],
+					"variable": [
+						{
+							"key": "buyerId",
+							"value": ""
+						},
+						{
+							"key": "sellerId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0007_unfollow",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/users/:buyerId/unfollow/:sellerId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						":buyerId",
+						"unfollow",
+						":sellerId"
+					],
+					"variable": [
+						{
+							"key": "buyerId",
+							"value": ""
+						},
+						{
+							"key": "sellerId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "buyerId",
+			"value": "1"
+		}
+	]
+}

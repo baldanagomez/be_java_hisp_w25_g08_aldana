@@ -1,6 +1,7 @@
 package com.grupo08.socialmeli.service;
 
 import com.grupo08.socialmeli.dto.response.FollowDto;
+import com.grupo08.socialmeli.dto.response.FollowersDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements IUserService {
 

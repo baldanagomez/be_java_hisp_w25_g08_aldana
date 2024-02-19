@@ -19,6 +19,16 @@ public class UserController {
     public ResponseEntity<?> followSeller(@PathVariable int userId, @PathVariable int userIdToFollow){
         return new ResponseEntity<>(sellerService.follow(userId, userIdToFollow), HttpStatus.OK);
     }
+    @GetMapping("/{userId}/followers/list")
+    public ResponseEntity<?> followSeller(@PathVariable int userId){
+        return new ResponseEntity<>(sellerService.getFollowers(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/unfollow/{userIdToFollow}")
+    public ResponseEntity<?> unFollowSeller(@PathVariable int userId, @PathVariable int userIdToFollow){
+        sellerService.unfollow(userId, userIdToFollow);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
 
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?> getFollowedSellers(@PathVariable int userId){
