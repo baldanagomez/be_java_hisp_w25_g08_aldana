@@ -1,6 +1,7 @@
 package com.grupo08.socialmeli.service;
 
 import com.grupo08.socialmeli.dto.response.FollowDto;
+import com.grupo08.socialmeli.dto.response.FollowedDTO;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.exception.BadRequestException;
@@ -9,6 +10,8 @@ import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class UserServiceImpl implements IUserService {
@@ -43,5 +46,33 @@ public class UserServiceImpl implements IUserService {
         buyer.get().addFollowingSeller(seller.get());
 
         return new FollowDto(idSeller, seller.get().getName());
+    }
+
+    @Override
+    public FollowedDTO getFollowedSellers(int userId) {
+        Optional<Buyer> user = this.buyerRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new NotFoundException("El usuario con el id:"+userId+" no se encontró");
+        }
+
+        if(!(user.get() instanceof Buyer)){
+            throw new BadRequestException("El usuario con el id:"+userId+" no es un comprador");
+        }
+        Buyer buyer = user.get();
+
+        FollowedDTO buyerResponseDTO = new FollowedDTO();
+        buyerResponseDTO.setUser_id(buyer.getId());
+        buyerResponseDTO.setUser_name(buyer.getName());
+
+        List<Seller> followedSellers = buyer.getFollowing();
+        List<FollowDto> followedSellersDTO = new ArrayList<>();
+
+        for(Seller seller: followedSellers){
+            followedSellersDTO.add(new FollowDto(seller.getId(),seller.getName()));
+        }
+
+        buyerResponseDTO.setFollowed(followedSellersDTO);
+
+        return buyerResponseDTO;
     }
 }
