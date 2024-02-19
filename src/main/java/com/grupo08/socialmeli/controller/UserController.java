@@ -30,4 +30,9 @@ public class UserController {
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}/followed/list")
+    public ResponseEntity<?> getFollowedSellers(@PathVariable int userId){
+        return new ResponseEntity<>(sellerService.getFollowedSellers(userId),HttpStatus.OK);
+    }
+
 }

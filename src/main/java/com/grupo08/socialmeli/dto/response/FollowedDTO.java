@@ -9,8 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class FollowersDto {
+public class FollowedDTO {
     private int user_id;
     private String user_name;
-    private List<FollowDto> followers;
+    private List<FollowDto> followed;
 }
