@@ -2,6 +2,7 @@ package com.grupo08.socialmeli.repository;
 
 import com.grupo08.socialmeli.entity.Post;
 import com.grupo08.socialmeli.entity.Seller;
+import com.grupo08.socialmeli.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ public class SellerRepositoryImpl implements ISellerRepository {
 
     private final List<Seller> sellers = new ArrayList<>(
             Arrays.asList(
-                    new Seller(1, "Brayan", new ArrayList<>()),
-                    new Seller(2, "Juan", new ArrayList<>()),
-                    new Seller(3, "Carlos", new ArrayList<>())
+                    new Seller(1, "Brayan", new ArrayList<>(),new ArrayList<>(Arrays.asList(new User(5,"test"),new User(6,"test 2")))),
+                    new Seller(2, "Juan", new ArrayList<>(),new ArrayList<>()),
+                    new Seller(3, "Carlos", new ArrayList<>(),new ArrayList<>())
             )
     );
 
@@ -32,4 +33,5 @@ public class SellerRepositoryImpl implements ISellerRepository {
     public Optional<Seller> findById(int id) {
         return sellers.stream().filter(seller -> seller.getId() == id).findFirst();
     }
+
 }
