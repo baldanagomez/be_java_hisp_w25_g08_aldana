@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?> getFollowedSellers(@PathVariable int userId,
-                                                @RequestParam(required = false) String order){
+                                                @RequestParam String order){
         return new ResponseEntity<>(sellerService.getFollowedSellers(userId, order),HttpStatus.OK);
     }
 

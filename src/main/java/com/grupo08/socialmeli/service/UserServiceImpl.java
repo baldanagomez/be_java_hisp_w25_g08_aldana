@@ -106,21 +106,15 @@ public class UserServiceImpl implements IUserService {
         buyerResponseDTO.setUser_name(buyer.getName());
 
         List<Seller> followedSellers = new ArrayList<>();
-
-        if(order!=null){
-            if(order.equalsIgnoreCase("name_asc")){
-                followedSellers = buyer.getFollowing().stream()
-                        .sorted(Comparator.comparing(User::getName)).toList();
-            }else if(order.equalsIgnoreCase("name_desc")){
-                followedSellers = buyer.getFollowing().stream()
-                        .sorted(Comparator.comparing(User::getName).reversed()).toList();
-            }else{
-                throw new BadRequestException("El valor del parámetro order no es correcto");
-            }
+        if(order.equalsIgnoreCase("name_asc")){
+            followedSellers = buyer.getFollowing().stream()
+                    .sorted(Comparator.comparing(User::getName)).toList();
+        }else if(order.equalsIgnoreCase("name_desc")){
+            followedSellers = buyer.getFollowing().stream()
+                    .sorted(Comparator.comparing(User::getName).reversed()).toList();
         }else{
-            followedSellers = buyer.getFollowing();
+            throw new BadRequestException("El valor del parámetro order no es correcto");
         }
-
 
         List<FollowDto> followedSellersDTO = new ArrayList<>();
 
