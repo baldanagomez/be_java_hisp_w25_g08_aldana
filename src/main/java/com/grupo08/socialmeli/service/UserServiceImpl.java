@@ -7,17 +7,16 @@ import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class SellerServiceImpl implements ISellerService {
+public class UserServiceImpl implements IUserService {
 
     IBuyerRepository buyerRepository;
     ISellerRepository sellerRepository;
 
-    public SellerServiceImpl(IBuyerRepository buyerRepository, ISellerRepository sellerRepository) {
+    public UserServiceImpl(IBuyerRepository buyerRepository, ISellerRepository sellerRepository) {
         this.buyerRepository = buyerRepository;
         this.sellerRepository = sellerRepository;
     }
