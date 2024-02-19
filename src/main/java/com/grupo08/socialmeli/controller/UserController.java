@@ -1,5 +1,6 @@
 package com.grupo08.socialmeli.controller;
 
+import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<?> getFollowedSellers(@PathVariable int userId){
-        return new ResponseEntity<>(sellerService.getFollowedSellers(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowedSellers(@PathVariable int userId,
+                                                @RequestParam String order){
+        return new ResponseEntity<>(sellerService.getFollowedSellers(userId, order),HttpStatus.OK);
     }
 
 }
