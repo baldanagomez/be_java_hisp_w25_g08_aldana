@@ -12,10 +12,7 @@ import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,12 +51,32 @@ public class UserServiceImpl implements IUserService {
         return new FollowDto(idSeller, seller.get().getName());
     }
 
-    public FollowersDto getFollowers(int idSeller) {
+    public FollowersDto getFollowers(int idSeller,String order) {
         Optional<Seller> seller = sellerRepository.findById(idSeller);
 
         if(seller.isEmpty()) throw new NotFoundException("No hay vendedor con ese ID.");
 
         List<User> followers = seller.get().getFollowers();
+
+        if(!Objects.equals(order, "default")){
+            switch (order){
+                case "name_asc":
+                    followers = followers.stream()
+                            .sorted(Comparator.comparing(User::getName))
+                            .collect(Collectors.toList());;
+                    break;
+                case  "name_desc":
+                    followers = followers.stream()
+                            .sorted(Comparator.comparing(User::getName).reversed())
+                            .collect(Collectors.toList());;
+                    break;
+                default:
+                    throw new BadRequestException("Parametro de orden no valido");
+
+            }
+        }
+
+
 
         FollowersDto followersDto = new FollowersDto(
                 seller.get().getId(),
