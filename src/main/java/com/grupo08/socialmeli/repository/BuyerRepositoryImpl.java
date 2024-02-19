@@ -13,8 +13,8 @@ import java.util.Optional;
 public class BuyerRepositoryImpl implements IBuyerRepository {
     private final List<Buyer> listBuyers = new ArrayList<>(Arrays.asList(
         new Buyer(1, "Fabian", new ArrayList<>(Arrays.asList(
-                new Seller(1,"Seller1",null),
-                new Seller(2,"Seller2",null)
+                new Seller(1,"Seller1",null,null),
+                new Seller(2,"Seller2",null,null)
         ))),
         new Buyer(2, "Miguel", new ArrayList<>()),
         new Buyer(3, "Andres", new ArrayList<>())
