@@ -23,4 +23,10 @@ public class UserController {
         return new ResponseEntity<>(sellerService.follow(userId, userIdToFollow), HttpStatus.OK);
     }
 
+    @PostMapping("/{userId}/unfollow/{userIdToFollow}")
+    public ResponseEntity<?> unFollowSeller(@PathVariable int userId, @PathVariable int userIdToFollow){
+        sellerService.unfollow(userId, userIdToFollow);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
 }
