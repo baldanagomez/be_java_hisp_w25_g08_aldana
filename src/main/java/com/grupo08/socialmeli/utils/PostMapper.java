@@ -6,7 +6,7 @@ import java.util.List;
 import com.grupo08.socialmeli.dto.PostDto;
 import com.grupo08.socialmeli.entity.Post;
 
-public class    PostMapper {
+public class PostMapper {
     public static Post fromDto(PostDto postDto){
         
         return new Post(

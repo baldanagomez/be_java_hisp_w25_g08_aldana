@@ -1,7 +1,5 @@
 package com.grupo08.socialmeli.controller;
 
-import com.grupo08.socialmeli.entity.Seller;
-
 import com.grupo08.socialmeli.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
