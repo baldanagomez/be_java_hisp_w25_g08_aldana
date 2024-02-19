@@ -4,7 +4,7 @@ import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.dto.response.FollowersDto;
-import com.grupo08.socialmeli.dto.response.PostDto;
+import com.grupo08.socialmeli.dto.PostDto;
 
 import java.util.List;
 

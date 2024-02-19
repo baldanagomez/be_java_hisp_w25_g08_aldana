@@ -4,7 +4,7 @@ import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.dto.response.FollowersDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
-import com.grupo08.socialmeli.dto.response.PostDto;
+import com.grupo08.socialmeli.dto.PostDto;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Post;
 import com.grupo08.socialmeli.entity.Seller;
@@ -13,6 +13,7 @@ import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
+import com.grupo08.socialmeli.utils.PostMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -181,8 +182,8 @@ public class UserServiceImpl implements IUserService {
         }
         LocalDate now= LocalDate.now();
         LocalDate afterweeks=LocalDate.now().minusWeeks(2);
-        listaDePost.stream().filter(x->x.getDate().isBefore(afterweeks)&&x.getDate().isAfter(now)).toList()
-                .stream().map();
-        return null;
+        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(afterweeks)&&x.getDate().isAfter(now)).toList();
+
+        return PostMapper.ListToDto(listaFiltrada);
     }
 }
