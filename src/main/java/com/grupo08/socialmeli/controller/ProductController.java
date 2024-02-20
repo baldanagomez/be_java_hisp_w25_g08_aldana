@@ -25,7 +25,8 @@ public class ProductController {
         return new ResponseEntity<>(postService.getAll(),HttpStatus.OK);
     }
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> followProcducts(@PathVariable Long idUser,@RequestParam  String order){
+    public ResponseEntity<?> followProcducts(@PathVariable("userId") Long idUser,@RequestParam(required = false)  String order){
+        System.out.println("-------"+order+"--------");
         if(order==null){
             return new ResponseEntity<>(userService.postSortWeeks(idUser),HttpStatus.OK);
         }else{
