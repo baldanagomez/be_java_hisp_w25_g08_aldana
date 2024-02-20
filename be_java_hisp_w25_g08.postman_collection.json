@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "c5ae512d-7801-49f4-9d54-8f23c3d0f913",
+		"_postman_id": "51598fd0-288c-4f95-940d-6ef45e3f8fa9",
 		"name": "be_java_hisp_w25_g08",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32580955"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -163,6 +162,34 @@
 					"path": [
 						"products",
 						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "006_009_returnFollowdsPost",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/products/followed/1/list?order=date_desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"products",
+						"followed",
+						"1",
+						"list"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "date_desc"
+						}
 					]
 				}
 			},
