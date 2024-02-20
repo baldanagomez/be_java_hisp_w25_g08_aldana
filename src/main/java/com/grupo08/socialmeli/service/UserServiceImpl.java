@@ -178,6 +178,19 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<PostDto> postSortDate(Long idUser,String order) {
+        if(order.equalsIgnoreCase("date_desc")) {
+            return postSortWeeks(idUser).stream().sorted(Comparator.comparing(PostDto::getDate).reversed())
+                    .collect(Collectors.toList());
+        }else if(order.equalsIgnoreCase("date_asc")){
+            return postSortWeeks(idUser).stream().sorted(Comparator.comparing(PostDto::getDate))
+                    .collect(Collectors.toList());
+        }else{
+            throw new BadRequestException("El valor del parámetro order no es correcto");
+        }
+    }
+
+    @Override
     public List<PostDto> postSortWeeks(Long idUser) {
         FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue());
         List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUser_id).toList();
