@@ -15,15 +15,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostDto {
-    @NotNull(message = "ID en blanco")
-    @NotBlank(message = "ID en blanco")
     int userId;
-
-    @NotNull(message = "ID en blanco")
-    @NotBlank(message = "ID en blanco")
     String date;
-
-    
     Product product;
     int category;
     double price;
