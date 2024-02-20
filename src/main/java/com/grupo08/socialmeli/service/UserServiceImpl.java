@@ -204,7 +204,7 @@ public class UserServiceImpl implements IUserService {
         LocalDate now= LocalDate.now();
         LocalDate afterweeks=LocalDate.now().minusWeeks(2);
 
-        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(now.plusDays(1))&&x.getDate().isAfter(afterweeks.minusWeeks(1))).toList();
+        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(now.plusDays(1))&&x.getDate().isAfter(afterweeks.minusDays(1))).toList();
 
         return new FollowingPostDto(idUser,PostMapper.ListToDto(listaFiltrada));
     }
