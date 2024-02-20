@@ -1,9 +1,6 @@
 package com.grupo08.socialmeli.service;
 
-import com.grupo08.socialmeli.dto.response.FollowDto;
-import com.grupo08.socialmeli.dto.response.FollowersCountDto;
-import com.grupo08.socialmeli.dto.response.FollowersDto;
-import com.grupo08.socialmeli.dto.response.FollowedDTO;
+import com.grupo08.socialmeli.dto.response.*;
 import com.grupo08.socialmeli.dto.PostDto;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Post;
@@ -12,6 +9,7 @@ import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
+import com.grupo08.socialmeli.repository.IPostRepository;
 import com.grupo08.socialmeli.repository.ISellerRepository;
 import com.grupo08.socialmeli.utils.PostMapper;
 import org.springframework.stereotype.Service;
@@ -28,10 +26,12 @@ public class UserServiceImpl implements IUserService {
 
     IBuyerRepository buyerRepository;
     ISellerRepository sellerRepository;
+    IPostRepository postRepository;
 
-    public UserServiceImpl(IBuyerRepository buyerRepository, ISellerRepository sellerRepository) {
+    public UserServiceImpl(IBuyerRepository buyerRepository, ISellerRepository sellerRepository, IPostRepository iPostRepository) {
         this.buyerRepository = buyerRepository;
         this.sellerRepository = sellerRepository;
+        this.postRepository= iPostRepository;
     }
 
     @Override
@@ -126,6 +126,7 @@ public class UserServiceImpl implements IUserService {
         }
         Buyer buyer = user.get();
 
+
         FollowedDTO buyerResponseDTO = new FollowedDTO();
         buyerResponseDTO.setUser_id(buyer.getId());
         buyerResponseDTO.setUser_name(buyer.getName());
@@ -144,6 +145,7 @@ public class UserServiceImpl implements IUserService {
             }
         }else{
             followedSellers = buyer.getFollowing();
+
         }
 
 
@@ -178,30 +180,32 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<PostDto> postSortDate(Long idUser,String order) {
+    public FollowingPostDto postSortDate(Long idUser, String order) {
         if(order.equalsIgnoreCase("date_desc")) {
-            return postSortWeeks(idUser).stream().sorted(Comparator.comparing(PostDto::getDate).reversed())
-                    .collect(Collectors.toList());
+            return new FollowingPostDto(idUser,postSortWeeks(idUser).getPost().stream().sorted(Comparator.comparing(PostDto::getDate).reversed())
+                    .collect(Collectors.toList()));
         }else if(order.equalsIgnoreCase("date_asc")){
-            return postSortWeeks(idUser).stream().sorted(Comparator.comparing(PostDto::getDate))
-                    .collect(Collectors.toList());
+            return new FollowingPostDto(idUser,postSortWeeks(idUser).getPost().stream().sorted(Comparator.comparing(PostDto::getDate))
+                    .collect(Collectors.toList()));
         }else{
             throw new BadRequestException("El valor del parámetro order no es correcto");
         }
     }
 
     @Override
-    public List<PostDto> postSortWeeks(Long idUser) {
-        FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue());
+    public FollowingPostDto postSortWeeks(Long idUser) {
+        FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue(),null);
         List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUser_id).toList();
+        System.out.println(listaDeIdsDeVendedores);
         List<Post> listaDePost= new ArrayList<>();
         for(Integer id:listaDeIdsDeVendedores  ){
-            listaDePost.addAll(sellerRepository.findById(id).get().getPosts());
+            listaDePost.addAll(postRepository.getByIdUser((long)id));
         }
         LocalDate now= LocalDate.now();
         LocalDate afterweeks=LocalDate.now().minusWeeks(2);
-        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(afterweeks)&&x.getDate().isAfter(now)).toList();
 
-        return PostMapper.ListToDto(listaFiltrada);
+        List<Post>listaFiltrada=listaDePost.stream().filter(x->x.getDate().isBefore(now.plusDays(1))&&x.getDate().isAfter(afterweeks.minusWeeks(1))).toList();
+
+        return new FollowingPostDto(idUser,PostMapper.ListToDto(listaFiltrada));
     }
 }

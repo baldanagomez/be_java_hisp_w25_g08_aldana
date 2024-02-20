@@ -9,4 +9,5 @@ public interface IPostRepository {
    void insertPost(Post post);
    List<Post> getAll();
    Optional<Post> getPostByProductId(int productId);
+   List<Post> getByIdUser(Long idUser);
 }
