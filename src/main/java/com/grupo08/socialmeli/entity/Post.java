@@ -16,7 +16,7 @@ public class Post {
     LocalDate date;
     Product product;
     int category;
-    double price;
+    Double price;
 
     public Post(int userId, String date, Product product, int category, double price) {
         this.userId = userId;
