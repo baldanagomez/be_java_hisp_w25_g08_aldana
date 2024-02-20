@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 
 import com.grupo08.socialmeli.entity.Post;
 import com.grupo08.socialmeli.entity.Product;
-import com.grupo08.socialmeli.entity.Seller;
 
 @Repository
 public class PostRepositoryImp implements IPostRepository {
