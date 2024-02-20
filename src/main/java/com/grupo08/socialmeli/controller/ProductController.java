@@ -25,7 +25,7 @@ public class ProductController {
     @Autowired
     IUserService userService;
 
-    @GetMapping("/posts/getAll")
+    @GetMapping("/post/getAll")
     public ResponseEntity<?> getAllPosts() {
         return new ResponseEntity<>(postService.getAll(),HttpStatus.OK);
     }
