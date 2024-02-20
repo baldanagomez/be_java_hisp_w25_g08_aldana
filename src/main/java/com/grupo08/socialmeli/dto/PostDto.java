@@ -15,9 +15,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostDto {
-    int userId;
+    Integer userId;
     String date;
     Product product;
-    int category;
-    double price;
+    Integer category;
+    Double price;
 }
