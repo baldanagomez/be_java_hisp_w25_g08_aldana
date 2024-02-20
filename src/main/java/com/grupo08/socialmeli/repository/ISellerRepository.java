@@ -1,7 +1,6 @@
 package com.grupo08.socialmeli.repository;
 
 import com.grupo08.socialmeli.entity.Seller;
-import com.grupo08.socialmeli.entity.User;
 
 import java.util.List;
 import java.util.Optional;
