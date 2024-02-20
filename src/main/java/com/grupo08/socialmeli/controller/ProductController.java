@@ -25,17 +25,16 @@ public class ProductController {
     @Autowired
     IUserService userService;
 
-    @GetMapping("/products/posts/getAll")
+    @GetMapping("/posts/getAll")
     public ResponseEntity<?> getAllPosts() {
         return new ResponseEntity<>(postService.getAll(),HttpStatus.OK);
     }
-    @GetMapping("products/followed/{userId}/list")
+    @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> followProcducts(@PathVariable Long idUser){
         return new ResponseEntity<>(userService.postSortWeeks(idUser),HttpStatus.OK);
     }
 
-
-    @PostMapping("products/post")
+    @PostMapping("/post")
     public ResponseEntity<?> insertPost(@RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.insertPost(postDto),HttpStatus.OK);
     }
