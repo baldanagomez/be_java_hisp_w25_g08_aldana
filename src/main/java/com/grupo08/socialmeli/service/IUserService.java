@@ -22,5 +22,6 @@ public interface IUserService {
     List<PostDto> postSortWeeks(Long idUser);
 
     FollowersCountDto countSellerFollowers(int userId);
+    List<PostDto> postSortDate(Long idUser, String order);
 
 }
