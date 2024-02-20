@@ -15,11 +15,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostDto implements  Comparable<PostDto> {
-    int userId;
+    Integer userId;
     String date;
     Product product;
-    int category;
-    double price;
+    Integer category;
+    Double price;
 
     @Override
     public int compareTo(PostDto postDto){

@@ -36,7 +36,7 @@ public class PostMapper {
                 post.getDate().toString(), 
                 post.getProduct(), 
                 post.getCategory(), 
-                post.getCategory()
+                post.getPrice()
             );
             listPostDto.add(postDto);
         }
