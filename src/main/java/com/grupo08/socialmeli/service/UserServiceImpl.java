@@ -128,8 +128,8 @@ public class UserServiceImpl implements IUserService {
 
 
         FollowedDTO buyerResponseDTO = new FollowedDTO();
-        buyerResponseDTO.setUser_id(buyer.getId());
-        buyerResponseDTO.setUser_name(buyer.getName());
+        buyerResponseDTO.setUserId(buyer.getId());
+        buyerResponseDTO.setUserName(buyer.getName());
 
         List<Seller> followedSellers = new ArrayList<>();
 
@@ -176,11 +176,11 @@ public class UserServiceImpl implements IUserService {
         //if(buyerRepository.findById(userId).isPresent()) throw new BadRequestException("El id ingresado debe ser de un vendedor: se obtuvo comprador");
 
         //return
-        return new FollowersCountDto(userId, seller.get().getName(), seller.get().getFollowers().size());
+        return new FollowersCountDto(userId, seller.get().getName(), (long) seller.get().getFollowers().size());
     }
 
     @Override
-    public FollowingPostDto postSortDate(Long idUser, String order) {
+    public FollowingPostDto postSortDate(Integer idUser, String order) {
         if(order.equalsIgnoreCase("date_desc")) {
             return new FollowingPostDto(idUser,postSortWeeks(idUser).getPost().stream().sorted(Comparator.comparing(PostDto::getDate).reversed())
                     .collect(Collectors.toList()));
@@ -193,9 +193,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public FollowingPostDto postSortWeeks(Long idUser) {
+    public FollowingPostDto postSortWeeks(Integer idUser) {
         FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue(),null);
-        List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUser_id).toList();
+        List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUserId).toList();
         System.out.println(listaDeIdsDeVendedores);
         List<Post> listaDePost= new ArrayList<>();
         for(Integer id:listaDeIdsDeVendedores  ){
