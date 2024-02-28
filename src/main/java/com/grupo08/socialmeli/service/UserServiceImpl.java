@@ -167,15 +167,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public FollowersCountDto countSellerFollowers(int userId) {
-        //vars
         Optional<Seller> seller = sellerRepository.findById(userId);
-
-        //validate: el usuario obtenido existe y es vendedor
         if(seller.isEmpty()) throw new NotFoundException("El usuario no existe");
-        //validacion comentada dado repeticion de id entre compradores y vendedores
-        //if(buyerRepository.findById(userId).isPresent()) throw new BadRequestException("El id ingresado debe ser de un vendedor: se obtuvo comprador");
-
-        //return
         return new FollowersCountDto(userId, seller.get().getName(), (long) seller.get().getFollowers().size());
     }
 
