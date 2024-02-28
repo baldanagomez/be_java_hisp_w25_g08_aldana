@@ -1,20 +1,24 @@
 package com.grupo08.socialmeli.controller;
 
-import com.grupo08.socialmeli.dto.response.FollowersCountDto;
+import com.grupo08.socialmeli.dto.response.FollowedDTO;
 import com.grupo08.socialmeli.service.IUserService;
+import com.grupo08.socialmeli.utils.TestData;
+import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
     @Mock
@@ -36,6 +40,20 @@ class UserControllerTest {
 
     @Test
     void getFollowedSellers() {
+        //ARRANGE
+        int userId = 1000;
+        String order = null;
+
+        FollowedDTO followedDTO = TestData.getFollowedDTOResponse(userId);
+        when(userService.getFollowedSellers(userId,order)).thenReturn(followedDTO);
+
+        //ACT
+        ResponseEntity<?> response =
+                userController.getFollowedSellers(followedDTO.getUserId(),order);
+
+        //ASSERT
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
     }
 
     @Test
