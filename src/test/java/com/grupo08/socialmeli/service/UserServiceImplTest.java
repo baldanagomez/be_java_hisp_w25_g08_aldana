@@ -131,14 +131,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("Get users sorted by name asc or desc")
-    void getFollowersbyId() {
-
-
-    }
-
-    @Test
-    @DisplayName("Get users sorted by name asc or desc")
-    void getFollowersbyId() {
+    void getFollowersById() {
 
 
     }
