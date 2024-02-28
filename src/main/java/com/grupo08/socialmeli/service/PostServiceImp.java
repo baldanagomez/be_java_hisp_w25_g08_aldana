@@ -68,7 +68,8 @@ public class PostServiceImp implements IPostService {
             throw new NotFoundException("No existe vendedor");
 
         try {
-            LocalDate datetime = LocalDate.parse(postDto.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            String dateToString = postDto.getDate().toString();
+            LocalDate.parse(dateToString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         } catch (Exception e) {
             throw new BadRequestException("Formato para la fecha no valido");
         }
