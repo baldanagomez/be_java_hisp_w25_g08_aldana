@@ -158,10 +158,7 @@ public class UserServiceImpl implements IUserService {
         return buyerResponseDTO;
     }
 
-    @Override
-    public FollowedDTO getFollowedSellers(int userId) {
-        return null;
-    }
+
 
     @Override
     public FollowersCountDto countSellerFollowers(int userId) {
