@@ -34,7 +34,7 @@ public class PostRepositoryImp implements IPostRepository {
 
     @Override
     public List<Post> getByIdUser(Long idUser) {
-        return listPosts.stream().filter(p->p.getUserId().equals(idUser)).toList();
+        return listPosts.stream().filter(p->p.getUserId()==idUser.longValue()).toList();
     }
 
 }

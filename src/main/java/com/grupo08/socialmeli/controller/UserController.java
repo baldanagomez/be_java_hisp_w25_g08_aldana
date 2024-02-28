@@ -1,6 +1,7 @@
 package com.grupo08.socialmeli.controller;
 
 import com.grupo08.socialmeli.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followers/count")
-    public  ResponseEntity<?> followersCount(@PathVariable int userId){
+    public  ResponseEntity<?> followersCount(@Valid @PathVariable int userId){
         return new ResponseEntity<>(sellerService.countSellerFollowers(userId),HttpStatus.OK);
     }
 
