@@ -1,48 +1,30 @@
 package com.grupo08.socialmeli.service;
 
 import com.grupo08.socialmeli.dto.response.FollowDto;
+import com.grupo08.socialmeli.dto.response.FollowedDTO;
+import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.entity.User;
+import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
 import com.grupo08.socialmeli.repository.SellerRepositoryImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import com.grupo08.socialmeli.dto.response.FollowersCountDto;
-import com.grupo08.socialmeli.exception.NotFoundException;
-import com.grupo08.socialmeli.repository.ISellerRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.grupo08.socialmeli.utils.TestData;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import com.grupo08.socialmeli.repository.IBuyerRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import com.grupo08.socialmeli.dto.response.FollowedDTO;
-import com.grupo08.socialmeli.entity.Buyer;
-import com.grupo08.socialmeli.entity.Seller;
-import com.grupo08.socialmeli.entity.User;
-import com.grupo08.socialmeli.exception.BadRequestException;
-import com.grupo08.socialmeli.utils.TestData;
-import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,14 +41,14 @@ class UserServiceImplTest {
     UserServiceImpl userService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
     }
 
     @Test
     @DisplayName("T0001_Ok")
     public void testFollowSuccess() {
-        int existingBuyerId =  1; // ID de comprador existente
-        int existingSellerId =  2; // ID de vendedor existente
+        int existingBuyerId = 1; // ID de comprador existente
+        int existingSellerId = 2; // ID de vendedor existente
 
         // Configura el mock para que devuelva objetos válidos
         Buyer mockBuyer = new Buyer(existingBuyerId, "Fabian", new ArrayList<>()); // Asume que Buyer y Seller son clases que existen
@@ -105,7 +87,7 @@ class UserServiceImplTest {
 
         // Ejecuta el método a probar
         assertThrows(NotFoundException.class, () ->
-            userService.follow(nonExistentBuyerId, existingSellerId));
+                userService.follow(nonExistentBuyerId, existingSellerId));
 
         // Verifica que el método findById fue llamado con el ID correcto
         verify(buyerRepository).findById(nonExistentBuyerId);
@@ -143,23 +125,23 @@ class UserServiceImplTest {
     @Test
     @DisplayName("T0002_OK")
     void unfollowOk() {
-         int existingBuyerId = 1;
-         int existingSellerId = 2;
+        int existingBuyerId = 1;
+        int existingSellerId = 2;
 
-         Buyer mockBuyer = new Buyer(existingBuyerId, "Juan", new ArrayList<>(
-                 List.of(new Seller(existingSellerId, "Andrés", new ArrayList<>(), new ArrayList<>()))
-         ));
-         Seller mockSeller = new Seller(existingSellerId, "Andrés", new ArrayList<>(), new ArrayList<>(
-                 List.of(new Buyer(existingBuyerId, "Juan", new ArrayList<>()))
-         ));
+        Buyer mockBuyer = new Buyer(existingBuyerId, "Juan", new ArrayList<>(
+                List.of(new Seller(existingSellerId, "Andrés", new ArrayList<>(), new ArrayList<>()))
+        ));
+        Seller mockSeller = new Seller(existingSellerId, "Andrés", new ArrayList<>(), new ArrayList<>(
+                List.of(new Buyer(existingBuyerId, "Juan", new ArrayList<>()))
+        ));
 
-         when(buyerRepository.findById(existingBuyerId)).thenReturn(Optional.of(mockBuyer));
-         when(sellerRepository.findById(existingSellerId)).thenReturn(Optional.of(mockSeller));
+        when(buyerRepository.findById(existingBuyerId)).thenReturn(Optional.of(mockBuyer));
+        when(sellerRepository.findById(existingSellerId)).thenReturn(Optional.of(mockSeller));
 
-         userService.unfollow(existingBuyerId, existingSellerId);
+        userService.unfollow(existingBuyerId, existingSellerId);
 
-         assertFalse(mockBuyer.getFollowing().contains(mockSeller));
-         assertFalse(mockSeller.getFollowers().contains(mockBuyer));
+        assertFalse(mockBuyer.getFollowing().contains(mockSeller));
+        assertFalse(mockSeller.getFollowers().contains(mockBuyer));
     }
 
     @Test
@@ -179,7 +161,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("T0002_seller_not_found")
-    void unfollow_seller_notfound(){
+    void unfollow_seller_notfound() {
         int existingBuyerId = 12;
         int nonExistingSellerId = 2;
 
@@ -195,7 +177,7 @@ class UserServiceImplTest {
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @DisplayName("FEATURE: vendedores seguidos por un comprador")
-    class FollowedSellersByBuyer{
+    class FollowedSellersByBuyer {
 
         @Test
         @Order(1)
@@ -203,15 +185,15 @@ class UserServiceImplTest {
         void getFollowedSellersNotFoundUser() {
             //ARRANGE
             int id = 1000;
-            String expectedMessage = "El usuario con el id:"+id+" no se encontró";
+            String expectedMessage = "El usuario con el id:" + id + " no se encontró";
             when(buyerRepository.findById(id)).thenReturn(Optional.empty());
 
             //ACT & ASSERT
             Exception exception =
                     assertThrows(NotFoundException.class,
-                            ()-> userService.getFollowedSellers(id,null));
+                            () -> userService.getFollowedSellers(id, null));
 
-            assertEquals(expectedMessage,exception.getMessage());
+            assertEquals(expectedMessage, exception.getMessage());
         }
 
         //pending BadRequestException
@@ -228,19 +210,19 @@ class UserServiceImplTest {
             when(buyerRepository.findById(id)).thenReturn(user);
 
             //ACT
-            FollowedDTO followedDTO = userService.getFollowedSellers(id,null);
+            FollowedDTO followedDTO = userService.getFollowedSellers(id, null);
 
             //ASSERT
             assertNotNull(followedDTO);
             assertNotNull(followedDTO.getFollowed());
-            assertEquals(name,followedDTO.getUserName());
-            assertEquals(id,followedDTO.getUserId());
+            assertEquals(name, followedDTO.getUserName());
+            assertEquals(id, followedDTO.getUserId());
         }
 
         @Test
         @Order(3)
         @DisplayName("Existe comprador: ok (seguidos ordenados asc)")
-        void getFollowedSellersSortedByAsc(){
+        void getFollowedSellersSortedByAsc() {
             //ARRANGE
             int id = 1000;
             String name = "TestMan";
@@ -250,20 +232,20 @@ class UserServiceImplTest {
             when(buyerRepository.findById(id)).thenReturn(user);
 
             //ACT
-            FollowedDTO followedDTO = userService.getFollowedSellers(id,order);
+            FollowedDTO followedDTO = userService.getFollowedSellers(id, order);
 
             //ASSERT
             assertNotNull(followedDTO);
             assertNotNull(followedDTO.getFollowed());
             assertTrue(TestData.isFollowedSellersSorted(
-                    followedDTO.getFollowed(),order));
+                    followedDTO.getFollowed(), order));
 
         }
 
         @Test
         @Order(4)
         @DisplayName("Existe comprador: ok (seguidos ordenados desc)")
-        void getFollowedSellersSortedByDesc(){
+        void getFollowedSellersSortedByDesc() {
             //ARRANGE
             int id = 1000;
             String name = "TestMan";
@@ -273,13 +255,13 @@ class UserServiceImplTest {
             when(buyerRepository.findById(id)).thenReturn(user);
 
             //ACT
-            FollowedDTO followedDTO = userService.getFollowedSellers(id,order);
+            FollowedDTO followedDTO = userService.getFollowedSellers(id, order);
 
             //ASSERT
             assertNotNull(followedDTO);
             assertNotNull(followedDTO.getFollowed());
             assertTrue(TestData.isFollowedSellersSorted(
-                    followedDTO.getFollowed(),order));
+                    followedDTO.getFollowed(), order));
 
         }
 
@@ -299,9 +281,9 @@ class UserServiceImplTest {
             //ACT & ASSERT
             Exception exception =
                     assertThrows(BadRequestException.class,
-                            ()-> userService.getFollowedSellers(id,order));
+                            () -> userService.getFollowedSellers(id, order));
 
-            assertEquals(expectedMessage,exception.getMessage());
+            assertEquals(expectedMessage, exception.getMessage());
         }
 
     }
@@ -316,11 +298,11 @@ class UserServiceImplTest {
     void countSellerFollowersOkTest() {
         //ARRANGE
         int sellerId = 1;
-        when(sellerRepository.findById(sellerId)).thenReturn(Optional.of(new Seller(1, "Brayan", new ArrayList<>(), List.of(new User(1,"follower")))));
+        when(sellerRepository.findById(sellerId)).thenReturn(Optional.of(new Seller(1, "Brayan", new ArrayList<>(), List.of(new User(1, "follower")))));
         //ACT
         FollowersCountDto countDto = userService.countSellerFollowers(sellerId);
         //ASSERT
-        assertEquals(1L,countDto.getFollowersCount());
+        assertEquals(1L, countDto.getFollowersCount());
     }
 
     @Test
@@ -329,7 +311,7 @@ class UserServiceImplTest {
         //ARRANGE
         when(sellerRepository.findById(anyInt())).thenReturn(Optional.empty());
         //ACT & ASSERT
-        assertThrows(NotFoundException.class,() -> userService.countSellerFollowers(anyInt()));
+        assertThrows(NotFoundException.class, () -> userService.countSellerFollowers(anyInt()));
     }
 
     @Test
