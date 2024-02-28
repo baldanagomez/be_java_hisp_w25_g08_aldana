@@ -160,22 +160,12 @@ public class UserServiceImpl implements IUserService {
         return buyerResponseDTO;
     }
 
-    @Override
-    public FollowedDTO getFollowedSellers(int userId) {
-        return null;
-    }
+
 
     @Override
     public FollowersCountDto countSellerFollowers(int userId) {
-        //vars
         Optional<Seller> seller = sellerRepository.findById(userId);
-
-        //validate: el usuario obtenido existe y es vendedor
         if(seller.isEmpty()) throw new NotFoundException("El usuario no existe");
-        //validacion comentada dado repeticion de id entre compradores y vendedores
-        //if(buyerRepository.findById(userId).isPresent()) throw new BadRequestException("El id ingresado debe ser de un vendedor: se obtuvo comprador");
-
-        //return
         return new FollowersCountDto(userId, seller.get().getName(), (long) seller.get().getFollowers().size());
     }
 
@@ -194,11 +184,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public FollowingPostDto postSortWeeks(Integer idUser) {
-        FollowedDTO vendedoresSeguidos= getFollowedSellers((int) idUser.longValue(),null);
+        FollowedDTO vendedoresSeguidos= getFollowedSellers(idUser,null);
         List<Integer> listaDeIdsDeVendedores=vendedoresSeguidos.getFollowed().stream().map(FollowDto::getUserId).toList();
-        System.out.println(listaDeIdsDeVendedores);
+        System.err.println(listaDeIdsDeVendedores);
         List<Post> listaDePost= new ArrayList<>();
         for(Integer id:listaDeIdsDeVendedores  ){
+            System.err.println(postRepository.getByIdUser((long)id));
             listaDePost.addAll(postRepository.getByIdUser((long)id));
         }
         LocalDate now= LocalDate.now();
