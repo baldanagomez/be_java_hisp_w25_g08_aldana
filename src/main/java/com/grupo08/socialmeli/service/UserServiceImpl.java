@@ -84,8 +84,6 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-
-
         FollowersDto followersDto = new FollowersDto(
                 seller.get().getId(),
                 seller.get().getName(),
