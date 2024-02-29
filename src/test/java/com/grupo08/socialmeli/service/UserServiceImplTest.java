@@ -5,46 +5,38 @@ import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
-import com.grupo08.socialmeli.exception.NotFoundException;
-import com.grupo08.socialmeli.repository.ISellerRepository;
 import org.junit.jupiter.api.DisplayName;
+import com.grupo08.socialmeli.entity.Buyer;
+import com.grupo08.socialmeli.entity.Post;
+import com.grupo08.socialmeli.repository.PostRepositoryImp;
+import com.grupo08.socialmeli.repository.SellerRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import com.grupo08.socialmeli.dto.PostDto;
+import com.grupo08.socialmeli.dto.response.FollowingPostDto;
+import com.grupo08.socialmeli.entity.Product;
 import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
-import com.grupo08.socialmeli.repository.IBuyerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
-import com.grupo08.socialmeli.dto.response.FollowersCountDto;
-import com.grupo08.socialmeli.entity.Buyer;
-import com.grupo08.socialmeli.entity.Seller;
-import com.grupo08.socialmeli.entity.User;
-import com.grupo08.socialmeli.exception.BadRequestException;
-import com.grupo08.socialmeli.exception.NotFoundException;
-import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
-import com.grupo08.socialmeli.repository.SellerRepositoryImpl;
+
 import com.grupo08.socialmeli.utils.TestData;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -55,6 +47,9 @@ class UserServiceImplTest {
 
     @Mock
     BuyerRepositoryImpl buyerRepository;
+
+    @Mock
+    PostRepositoryImp postRepository;
 
     @InjectMocks
     UserServiceImpl userService;
@@ -131,12 +126,183 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get users sorted by name asc")
+    void getFollowersbyIdAsc() {
+        // Arrange
+        FollowingPostDto expectedfollowingPost = new FollowingPostDto(
+            1,
+            List.of(
+                new PostDto(
+                        1,
+                        LocalDate.of(2024, 02, 21),
+                        new Product(
+                                12,
+                                "Silla Gamer",
+                                "Gamer",
+                                "Racer",
+                                "Blue & Green",
+                                "Cheap edition"
+                        ),
+                        1,
+                        350000.0
+                ),
+                new PostDto(
+                    1,
+                    LocalDate.of(2024, 02, 22),
+                    new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                    ),
+                    1,
+                    350000.0
+                )
+            )
+        );
 
-    @DisplayName("Get users sorted by name asc or desc")
-    void getFollowersById() {
 
+        Post post1 = new Post(
+                1,
+                LocalDate.of(2024, 02, 22),
+                new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
 
+        Post post2 = new Post(
+                1,
+                LocalDate.of(2024, 02, 21),
+                new Product(
+                        12,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
+
+        Seller seller = new Seller(
+                1, "Andres Seller Mock", List.of(post1, post2), List.of(
+                        new Buyer(
+                                1, "Andres Buyer Mock", List.of()
+                        )
+                )
+        );
+
+        Buyer buyer1 = new Buyer(
+                1, "Andres Buyer Mock", List.of(seller)
+        );
+
+        when(postRepository.getByIdUser(1L)).thenReturn(List.of(post1, post2));
+        when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
+
+        FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_asc");
+        assertEquals(expectedfollowingPost, actualFollowingPostDto);
     }
+
+
+    @Test
+    @DisplayName("Get users sorted by name desc")
+    void getFollowersbyIdDesc() {
+        // Arrange
+        FollowingPostDto expectedfollowingPost = new FollowingPostDto(
+            1,
+            List.of(
+                new PostDto(
+                    1,
+                    LocalDate.of(2024, 02, 22),
+                    new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                    ),
+                    1,
+                    350000.0
+                ),
+                new PostDto(
+                        1,
+                        LocalDate.of(2024, 02, 21),
+                        new Product(
+                                12,
+                                "Silla Gamer",
+                                "Gamer",
+                                "Racer",
+                                "Blue & Green",
+                                "Cheap edition"
+                        ),
+                        1,
+                        350000.0
+                )
+            )
+        );
+
+
+        Post post1 = new Post(
+                1,
+                LocalDate.of(2024, 02, 22),
+                new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
+
+        Post post2 = new Post(
+                1,
+                LocalDate.of(2024, 02, 21),
+                new Product(
+                        12,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
+
+        Seller seller = new Seller(
+                1, "Andres Seller Mock", List.of(post1, post2), List.of(
+                        new Buyer(
+                                1, "Andres Buyer Mock", List.of()
+                        )
+                )
+        );
+
+        Buyer buyer1 = new Buyer(
+                1, "Andres Buyer Mock", List.of(seller)
+        );
+
+        when(postRepository.getByIdUser(1L)).thenReturn(List.of(post1, post2));
+        when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
+
+        FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_desc");
+        assertEquals(expectedfollowingPost, actualFollowingPostDto);
+    }
+
+
 
     @Test
     @DisplayName("Camino feliz T-0003 asc")
