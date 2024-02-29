@@ -1,10 +1,9 @@
 package com.grupo08.socialmeli.service;
-import com.grupo08.socialmeli.dto.response.FollowersDto;
+import com.grupo08.socialmeli.dto.response.*;
 import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
-import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.ISellerRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +17,7 @@ import com.grupo08.socialmeli.repository.IBuyerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.grupo08.socialmeli.dto.response.FollowDto;
-import com.grupo08.socialmeli.dto.response.FollowedDTO;
+
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
@@ -41,6 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -414,10 +413,24 @@ class UserServiceImplTest {
     }
 
     @Test
-    void postSortDate() {
+    void testPostSortDate() {
+        // Arrange, Act and Assert
+        assertThrows(BadRequestException.class, () -> userService.postSortDate(1, "Order"));
+    }
+    @Test
+    void testPostSortWeeks() {
+        // Arrange
+        ArrayList<Seller> following = new ArrayList<>();
+        Optional<Buyer> ofResult = Optional.of(new Buyer(1, "Name", following));
+        when(buyerRepository.findById(anyInt())).thenReturn(ofResult);
+
+        // Act
+        FollowingPostDto actualPostSortWeeksResult = userService.postSortWeeks(1);
+
+        // Assert
+        verify(buyerRepository).findById(eq(1));
+        assertEquals(1, actualPostSortWeeksResult.getUserId().intValue());
+        assertEquals(following, actualPostSortWeeksResult.getPost());
     }
 
-    @Test
-    void postSortWeeks() {
-    }
 }
