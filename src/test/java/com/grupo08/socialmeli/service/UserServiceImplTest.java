@@ -610,19 +610,19 @@ class UserServiceImplTest {
         List<Post> posts = new ArrayList<>();
         vendedor.setId(1);
         // Objeto 1
-        Post post1 = new Post(1, "10-02-2024", null, 1, 10.0);
+        Post post1 = new Post(1, LocalDate.of(2024,02,10), null, 1, 10.0);
         posts.add(post1);
 
         // Objeto 2
-        Post post2 = new Post(1, "27-02-2024", null, 1, 10.0);
+        Post post2 = new Post(1, LocalDate.of(2024,02,27), null, 1, 10.0);
         posts.add(post2);
 
         // Objeto 3
-        Post post3 = new Post(1, "15-02-2024", null, 1, 10.0);
+        Post post3 = new Post(1, LocalDate.of(2024,02,15), null, 1, 10.0);
         posts.add(post3);
 
         // Objeto 4
-        Post post4 = new Post(1, "29-02-2024", null, 1, 10.0);
+        Post post4 = new Post(1, LocalDate.of(2024,02,29) , null, 1, 10.0);
         posts.add(post4);
          vendedor.setPosts(posts);
          following.add(vendedor);
