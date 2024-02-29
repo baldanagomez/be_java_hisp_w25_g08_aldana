@@ -84,8 +84,6 @@ public class UserServiceImpl implements IUserService {
             }
         }
 
-
-
         FollowersDto followersDto = new FollowersDto(
                 seller.get().getId(),
                 seller.get().getName(),
@@ -121,11 +119,7 @@ public class UserServiceImpl implements IUserService {
             throw new NotFoundException("El usuario con el id:"+userId+" no se encontró");
         }
 
-        if(!(user.get() instanceof Buyer)){
-            throw new BadRequestException("El usuario con el id:"+userId+" no es un comprador");
-        }
         Buyer buyer = user.get();
-
 
         FollowedDTO buyerResponseDTO = new FollowedDTO();
         buyerResponseDTO.setUserId(buyer.getId());
@@ -160,22 +154,12 @@ public class UserServiceImpl implements IUserService {
         return buyerResponseDTO;
     }
 
-    @Override
-    public FollowedDTO getFollowedSellers(int userId) {
-        return null;
-    }
+
 
     @Override
     public FollowersCountDto countSellerFollowers(int userId) {
-        //vars
         Optional<Seller> seller = sellerRepository.findById(userId);
-
-        //validate: el usuario obtenido existe y es vendedor
         if(seller.isEmpty()) throw new NotFoundException("El usuario no existe");
-        //validacion comentada dado repeticion de id entre compradores y vendedores
-        //if(buyerRepository.findById(userId).isPresent()) throw new BadRequestException("El id ingresado debe ser de un vendedor: se obtuvo comprador");
-
-        //return
         return new FollowersCountDto(userId, seller.get().getName(), (long) seller.get().getFollowers().size());
     }
 
