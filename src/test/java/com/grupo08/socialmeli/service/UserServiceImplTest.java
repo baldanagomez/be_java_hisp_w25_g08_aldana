@@ -1,7 +1,11 @@
 package com.grupo08.socialmeli.service;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.grupo08.socialmeli.dto.response.*;
-import com.grupo08.socialmeli.entity.Seller;
-import com.grupo08.socialmeli.entity.User;
+import com.grupo08.socialmeli.entity.*;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.exception.NotFoundException;
@@ -14,12 +18,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
 import com.grupo08.socialmeli.repository.IBuyerRepository;
+
+import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
-import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Seller;
 import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
@@ -418,9 +424,44 @@ class UserServiceImplTest {
         assertThrows(BadRequestException.class, () -> userService.postSortDate(1, "Order"));
     }
     @Test
-    void testPostSortWeeks() {
+    void testPostSortWeeks() throws JsonProcessingException {
         // Arrange
         ArrayList<Seller> following = new ArrayList<>();
+         Seller vendedor= new Seller();
+        String json = "[\n" +
+                "    {\n" +
+                "        \"userId\": 1,\n" +
+                "        \"date\": \"26-02-2024\",\n" +
+                "        \"category\": 1,\n" +
+                "        \"price\": 10.0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"userId\": 1,\n" +
+                "        \"date\": \"29-02-2024\",\n" +
+                "        \"category\": 1,\n" +
+                "        \"price\": 10.0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"userId\": 1,\n" +
+                "        \"date\": \"10-02-2024\",\n"+
+                "        \"category\": 1,\n" +
+                "        \"price\": 10.0\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"userId\": 1,\n" +
+                "        \"date\": \"15-02-2024\",\n" +
+                "        \"category\": 1,\n" +
+                "        \"price\": 10.0\n" +
+                "    }\n" +
+                "]";
+         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new JsonDeserializer<LocalDate>() {
+            @Override
+            public LocalDate deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                return LocalDate.parse(json.getAsJsonPrimitive().getAsString());
+            }
+        }).create();
+         vendedor.setPosts(gson.fromJson(json,new TypeToken<List<Post>>(){}));
+         following.add(vendedor);
         Optional<Buyer> ofResult = Optional.of(new Buyer(1, "Name", following));
         when(buyerRepository.findById(anyInt())).thenReturn(ofResult);
 
@@ -429,7 +470,7 @@ class UserServiceImplTest {
 
         // Assert
         verify(buyerRepository).findById(eq(1));
-        assertEquals(1, actualPostSortWeeksResult.getUserId().intValue());
+        assertEquals(3, actualPostSortWeeksResult.getPost().size());
         assertEquals(following, actualPostSortWeeksResult.getPost());
     }
 
