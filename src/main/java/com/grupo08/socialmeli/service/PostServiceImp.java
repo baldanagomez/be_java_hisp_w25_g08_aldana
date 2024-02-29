@@ -67,12 +67,6 @@ public class PostServiceImp implements IPostService {
         if (!getSeller.isPresent())
             throw new NotFoundException("No existe vendedor");
 
-        try {
-            LocalDate datetime = LocalDate.parse(postDto.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        } catch (Exception e) {
-            throw new BadRequestException("Formato para la fecha no valido");
-        }
-
         Optional<Post> getPostbyProduct = postRepository.getPostByProductId(postDto.getProduct().getProductId());
 
         if (getPostbyProduct.isPresent())
