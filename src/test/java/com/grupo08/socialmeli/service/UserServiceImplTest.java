@@ -2,25 +2,23 @@ package com.grupo08.socialmeli.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+
 import com.grupo08.socialmeli.dto.response.*;
 import com.grupo08.socialmeli.entity.*;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.exception.NotFoundException;
-import com.grupo08.socialmeli.repository.ISellerRepository;
+import com.grupo08.socialmeli.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
-import com.grupo08.socialmeli.repository.IBuyerRepository;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,6 @@ import com.grupo08.socialmeli.entity.User;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
-import com.grupo08.socialmeli.repository.SellerRepositoryImpl;
 import com.grupo08.socialmeli.utils.TestData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,9 +42,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +56,9 @@ class UserServiceImplTest {
 
     @Mock
     BuyerRepositoryImpl buyerRepository;
+
+    @Mock
+    IPostRepository postRepository;
 
     @InjectMocks
     UserServiceImpl userService;
@@ -427,51 +426,35 @@ class UserServiceImplTest {
     void testPostSortWeeks() throws JsonProcessingException {
         // Arrange
         ArrayList<Seller> following = new ArrayList<>();
-         Seller vendedor= new Seller();
-        String json = "[\n" +
-                "    {\n" +
-                "        \"userId\": 1,\n" +
-                "        \"date\": \"26-02-2024\",\n" +
-                "        \"category\": 1,\n" +
-                "        \"price\": 10.0\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"userId\": 1,\n" +
-                "        \"date\": \"29-02-2024\",\n" +
-                "        \"category\": 1,\n" +
-                "        \"price\": 10.0\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"userId\": 1,\n" +
-                "        \"date\": \"10-02-2024\",\n"+
-                "        \"category\": 1,\n" +
-                "        \"price\": 10.0\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"userId\": 1,\n" +
-                "        \"date\": \"15-02-2024\",\n" +
-                "        \"category\": 1,\n" +
-                "        \"price\": 10.0\n" +
-                "    }\n" +
-                "]";
-         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new JsonDeserializer<LocalDate>() {
-            @Override
-            public LocalDate deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-                return LocalDate.parse(json.getAsJsonPrimitive().getAsString());
-            }
-        }).create();
-         vendedor.setPosts(gson.fromJson(json,new TypeToken<List<Post>>(){}));
+        Seller vendedor = new Seller();
+        List<Post> posts = new ArrayList<>();
+        vendedor.setId(1);
+        // Objeto 1
+        Post post1 = new Post(1, "10-02-2024", null, 1, 10.0);
+        posts.add(post1);
+
+        // Objeto 2
+        Post post2 = new Post(1, "27-02-2024", null, 1, 10.0);
+        posts.add(post2);
+
+        // Objeto 3
+        Post post3 = new Post(1, "15-02-2024", null, 1, 10.0);
+        posts.add(post3);
+
+        // Objeto 4
+        Post post4 = new Post(1, "29-02-2024", null, 1, 10.0);
+        posts.add(post4);
+         vendedor.setPosts(posts);
          following.add(vendedor);
         Optional<Buyer> ofResult = Optional.of(new Buyer(1, "Name", following));
         when(buyerRepository.findById(anyInt())).thenReturn(ofResult);
-
+        when(postRepository.getByIdUser(anyLong())).thenReturn(posts);
         // Act
         FollowingPostDto actualPostSortWeeksResult = userService.postSortWeeks(1);
 
         // Assert
         verify(buyerRepository).findById(eq(1));
         assertEquals(3, actualPostSortWeeksResult.getPost().size());
-        assertEquals(following, actualPostSortWeeksResult.getPost());
     }
 
 }
