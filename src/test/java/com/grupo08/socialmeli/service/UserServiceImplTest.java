@@ -126,10 +126,10 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Get users sorted by name asc")
-    void getFollowersbyIdAsc() {
+    @DisplayName("T0006 Get users sorted by name asc")
+    void getFollowersByIdAsc() {
         // Arrange
-        FollowingPostDto expectedfollowingPost = new FollowingPostDto(
+        FollowingPostDto expectedFollowingPost = new FollowingPostDto(
             1,
             List.of(
                 new PostDto(
@@ -210,15 +210,15 @@ class UserServiceImplTest {
         when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
 
         FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_asc");
-        assertEquals(expectedfollowingPost, actualFollowingPostDto);
+        assertEquals(expectedFollowingPost, actualFollowingPostDto);
     }
 
 
     @Test
-    @DisplayName("Get users sorted by name desc")
-    void getFollowersbyIdDesc() {
+    @DisplayName("T-0006 Get users sorted by name desc")
+    void getFollowersByIdDesc() {
         // Arrange
-        FollowingPostDto expectedfollowingPost = new FollowingPostDto(
+        FollowingPostDto expectedFollowingPost = new FollowingPostDto(
             1,
             List.of(
                 new PostDto(
@@ -299,7 +299,7 @@ class UserServiceImplTest {
         when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
 
         FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_desc");
-        assertEquals(expectedfollowingPost, actualFollowingPostDto);
+        assertEquals(expectedFollowingPost, actualFollowingPostDto);
     }
 
 
