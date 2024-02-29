@@ -1,10 +1,16 @@
 package com.grupo08.socialmeli.service;
-import com.grupo08.socialmeli.dto.response.FollowersDto;
-import com.grupo08.socialmeli.entity.Seller;
-import com.grupo08.socialmeli.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.grupo08.socialmeli.dto.response.*;
+import com.grupo08.socialmeli.entity.*;
 import com.grupo08.socialmeli.exception.BadRequestException;
 import com.grupo08.socialmeli.exception.NotFoundException;
 import com.grupo08.socialmeli.dto.response.FollowersCountDto;
+import com.grupo08.socialmeli.exception.NotFoundException;
+import com.grupo08.socialmeli.repository.*;
+import com.grupo08.socialmeli.repository.IPostRepository;
 import org.junit.jupiter.api.DisplayName;
 import com.grupo08.socialmeli.entity.Buyer;
 import com.grupo08.socialmeli.entity.Post;
@@ -20,16 +26,28 @@ import com.grupo08.socialmeli.dto.PostDto;
 import com.grupo08.socialmeli.dto.response.FollowingPostDto;
 import com.grupo08.socialmeli.entity.Product;
 import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
+
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.grupo08.socialmeli.dto.response.FollowDto;
 import com.grupo08.socialmeli.dto.response.FollowedDTO;
 
+
+import com.grupo08.socialmeli.dto.response.FollowersCountDto;
+import com.grupo08.socialmeli.entity.Seller;
+import com.grupo08.socialmeli.entity.User;
+import com.grupo08.socialmeli.exception.BadRequestException;
+import com.grupo08.socialmeli.exception.NotFoundException;
+import com.grupo08.socialmeli.repository.BuyerRepositoryImpl;
 import com.grupo08.socialmeli.utils.TestData;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -49,7 +67,7 @@ class UserServiceImplTest {
     BuyerRepositoryImpl buyerRepository;
 
     @Mock
-    PostRepositoryImp postRepository;
+    IPostRepository postRepository;
 
     @InjectMocks
     UserServiceImpl userService;
@@ -580,10 +598,42 @@ class UserServiceImplTest {
     }
 
     @Test
-    void postSortDate() {
+    void testPostSortDate() {
+        // Arrange, Act and Assert
+        assertThrows(BadRequestException.class, () -> userService.postSortDate(1, "Order"));
     }
-
     @Test
-    void postSortWeeks() {
+    void testPostSortWeeks() throws JsonProcessingException {
+        // Arrange
+        ArrayList<Seller> following = new ArrayList<>();
+        Seller vendedor = new Seller();
+        List<Post> posts = new ArrayList<>();
+        vendedor.setId(1);
+        // Objeto 1
+        Post post1 = new Post(1, LocalDate.of(2024,02,10), null, 1, 10.0);
+        posts.add(post1);
+
+        // Objeto 2
+        Post post2 = new Post(1, LocalDate.of(2024,02,27), null, 1, 10.0);
+        posts.add(post2);
+
+        // Objeto 3
+        Post post3 = new Post(1, LocalDate.of(2024,02,15), null, 1, 10.0);
+        posts.add(post3);
+
+        // Objeto 4
+        Post post4 = new Post(1, LocalDate.of(2024,02,29) , null, 1, 10.0);
+        posts.add(post4);
+         vendedor.setPosts(posts);
+         following.add(vendedor);
+        Optional<Buyer> ofResult = Optional.of(new Buyer(1, "Name", following));
+        when(buyerRepository.findById(anyInt())).thenReturn(ofResult);
+        when(postRepository.getByIdUser(anyLong())).thenReturn(posts);
+        // Act
+        FollowingPostDto actualPostSortWeeksResult = userService.postSortWeeks(1);
+
+        // Assert
+        verify(buyerRepository).findById(eq(1));
+        assertEquals(3, actualPostSortWeeksResult.getPost().size());
     }
 }

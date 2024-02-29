@@ -183,7 +183,7 @@ public class UserServiceImpl implements IUserService {
         System.err.println(listaDeIdsDeVendedores);
         List<Post> listaDePost= new ArrayList<>();
         for(Integer id:listaDeIdsDeVendedores  ){
-            System.err.println(postRepository.getByIdUser((long)id));
+
             listaDePost.addAll(postRepository.getByIdUser((long)id));
         }
         LocalDate now= LocalDate.now();
