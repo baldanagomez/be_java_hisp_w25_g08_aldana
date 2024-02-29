@@ -39,9 +39,6 @@ class UserServiceImplTest {
     BuyerRepositoryImpl buyerRepository;
 
     @Mock
-    SellerRepositoryImpl sellerRepository;
-
-    @Mock
     PostRepositoryImp postRepository;
 
     @InjectMocks
@@ -52,8 +49,97 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Get users sorted by name asc or desc")
-    void getFollowersbyId() {
+    @DisplayName("Get users sorted by name asc")
+    void getFollowersbyIdAsc() {
+        // Arrange
+        FollowingPostDto expectedfollowingPost = new FollowingPostDto(
+            1,
+            List.of(
+                new PostDto(
+                        1,
+                        LocalDate.of(2024, 02, 21),
+                        new Product(
+                                12,
+                                "Silla Gamer",
+                                "Gamer",
+                                "Racer",
+                                "Blue & Green",
+                                "Cheap edition"
+                        ),
+                        1,
+                        350000.0
+                ),
+                new PostDto(
+                    1,
+                    LocalDate.of(2024, 02, 22),
+                    new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                    ),
+                    1,
+                    350000.0
+                )
+            )
+        );
+
+
+        Post post1 = new Post(
+                1,
+                LocalDate.of(2024, 02, 22),
+                new Product(
+                        1,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
+
+        Post post2 = new Post(
+                1,
+                LocalDate.of(2024, 02, 21),
+                new Product(
+                        12,
+                        "Silla Gamer",
+                        "Gamer",
+                        "Racer",
+                        "Blue & Green",
+                        "Cheap edition"
+                ),
+                1,
+                350000.0
+        );
+
+        Seller seller = new Seller(
+                1, "Andres Seller Mock", List.of(post1, post2), List.of(
+                        new Buyer(
+                                1, "Andres Buyer Mock", List.of()
+                        )
+                )
+        );
+
+        Buyer buyer1 = new Buyer(
+                1, "Andres Buyer Mock", List.of(seller)
+        );
+
+        when(postRepository.getByIdUser(1L)).thenReturn(List.of(post1, post2));
+        when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
+
+        FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_asc");
+        assertEquals(expectedfollowingPost, actualFollowingPostDto);
+    }
+
+
+    @Test
+    @DisplayName("Get users sorted by name desc")
+    void getFollowersbyIdDesc() {
         // Arrange
         FollowingPostDto expectedfollowingPost = new FollowingPostDto(
             1,
@@ -74,7 +160,7 @@ class UserServiceImplTest {
                 ),
                 new PostDto(
                         1,
-                        LocalDate.of(2024, 02, 22),
+                        LocalDate.of(2024, 02, 21),
                         new Product(
                                 12,
                                 "Silla Gamer",
@@ -107,7 +193,7 @@ class UserServiceImplTest {
 
         Post post2 = new Post(
                 1,
-                LocalDate.of(2024, 02, 22),
+                LocalDate.of(2024, 02, 21),
                 new Product(
                         12,
                         "Silla Gamer",
@@ -135,9 +221,11 @@ class UserServiceImplTest {
         when(postRepository.getByIdUser(1L)).thenReturn(List.of(post1, post2));
         when(buyerRepository.findById(1)).thenReturn(Optional.of(buyer1));
 
-        FollowingPostDto followingPostDto = userService.postSortDate(1, "date_desc");
-        assertEquals(expectedfollowingPost, followingPostDto);
+        FollowingPostDto actualFollowingPostDto = userService.postSortDate(1, "date_desc");
+        assertEquals(expectedfollowingPost, actualFollowingPostDto);
     }
+
+
 
     @Test
     void getFollowers() {
