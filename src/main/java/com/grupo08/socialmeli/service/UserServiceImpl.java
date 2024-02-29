@@ -119,11 +119,7 @@ public class UserServiceImpl implements IUserService {
             throw new NotFoundException("El usuario con el id:"+userId+" no se encontró");
         }
 
-        if(!(user.get() instanceof Buyer)){
-            throw new BadRequestException("El usuario con el id:"+userId+" no es un comprador");
-        }
         Buyer buyer = user.get();
-
 
         FollowedDTO buyerResponseDTO = new FollowedDTO();
         buyerResponseDTO.setUserId(buyer.getId());
