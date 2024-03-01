@@ -23,7 +23,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -98,7 +99,7 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("T0001_seller_already_followed")
-    void followSellerAlreadyFollowed(){
+    void followSellerAlreadyFollowed() {
 
         int existingBuyerId = 1; // ID de comprador existente
         int existingSellerId = 2; // ID de vendedor existente
