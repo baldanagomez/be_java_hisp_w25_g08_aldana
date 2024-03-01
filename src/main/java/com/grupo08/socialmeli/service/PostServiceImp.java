@@ -48,7 +48,7 @@ public class PostServiceImp implements IPostService {
     @Override
     public void findExceptionsPostDto(PostDto postDto) {
 
-        if (
+        /*if (
             postDto.getUserId() == null ||
             postDto.getDate() == null ||
             postDto.getProduct() == null ||
@@ -61,17 +61,11 @@ public class PostServiceImp implements IPostService {
             postDto.getCategory() == null ||
             postDto.getPrice() == null
         )
-            throw new BadRequestException("Faltan datos");
+            throw new BadRequestException("Faltan datos");*/
 
         Optional<Seller> getSeller = sellerRepository.findById(postDto.getUserId());
         if (!getSeller.isPresent())
             throw new NotFoundException("No existe vendedor");
-
-        try {
-            LocalDate datetime = LocalDate.parse(postDto.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        } catch (Exception e) {
-            throw new BadRequestException("Formato para la fecha no valido");
-        }
 
         Optional<Post> getPostbyProduct = postRepository.getPostByProductId(postDto.getProduct().getProductId());
 

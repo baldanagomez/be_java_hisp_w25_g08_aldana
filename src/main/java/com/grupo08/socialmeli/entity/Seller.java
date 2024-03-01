@@ -21,11 +21,6 @@ public class Seller extends User{
         this.followers = followers;
     }
 
-    public Seller(List<Post> posts, List<User> followers) {
-        this.posts = posts;
-        this.followers = followers;
-    }
-
     public boolean checkBuyer(Buyer seller) {
         Optional<User> sellerToRemove = followers.stream()
                 .filter(s -> s.getId() == seller.getId())
