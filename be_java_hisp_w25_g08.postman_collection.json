@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c12533fb-f309-48fc-b9ac-ab6ad7c019ac",
+		"_postman_id": "4d19b6d0-cd6d-47e6-b0cc-a8d079fb3bb9",
 		"name": "be_java_hisp_w25_g08",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32956126"
+		"_exporter_id": "32994360"
 	},
 	"item": [
 		{
@@ -27,11 +27,11 @@
 					"variable": [
 						{
 							"key": "buyerId",
-							"value": "6"
+							"value": "1"
 						},
 						{
 							"key": "sellerId",
-							"value": "1"
+							"value": "0"
 						}
 					]
 				}
@@ -127,7 +127,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": 1,\n    \"date\": \"20-02-2024\",\n    \"product\": {\n        \"productId\": 123,\n        \"productName\": \"Silla gamer #2\",\n        \"type\": \"Gamer\",\n        \"brand\": \"Racer\",\n        \"color\": \"Blue & Green\",\n        \"notes\": \"Cheap Edition\"\n    },\n    \"category\": 1,\n    \"price\": 200000\n}",
+					"raw": "{\n    \"user_id\": 1,\n    \"date\": \"20-02-2024\",\n    \"product\": {\n        \"product_id\": 123,\n        \"product_name\": \"Silla gamer\",\n        \"type\": \"Gamer\",\n        \"brand\": \"Racer\",\n        \"color\": \"Blue & Green\",\n        \"notes\": \"Cheap Edition\"\n    },\n    \"category\": 1,\n    \"price\": 200000\n}",
 					"options": {
 						"raw": {
 							"language": "json"
